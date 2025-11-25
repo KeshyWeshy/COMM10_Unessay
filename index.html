@@ -54,7 +54,7 @@
         
         .scene-image {
             width: 100%;
-            height: 300px;
+            height: 400px; /* Fixed height for 3:2 aspect ratio */
             border-radius: 10px;
             margin-bottom: 20px;
             display: flex;
@@ -79,6 +79,7 @@
             border-left: 3px solid var(--accent);
             padding-left: 15px;
             text-align: left;
+            font-style: italic;
         }
         
         .typing {
@@ -140,29 +141,12 @@
         }
         
         .desk-interface {
-            background: linear-gradient(45deg, var(--wood-dark), var(--wood), var(--wood-light));
+            background: var(--darker);
             padding: 30px;
             border-radius: 10px;
             box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
             position: relative;
             min-height: 400px;
-        }
-        
-        .desk-interface::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 50px,
-                rgba(0, 0, 0, 0.1) 50px,
-                rgba(0, 0, 0, 0.1) 51px
-            );
-            pointer-events: none;
         }
         
         .folder-grid {
@@ -354,7 +338,7 @@
             }
             
             .scene-image {
-                height: 200px;
+                height: 300px; /* Adjusted for mobile */
             }
             
             .story-text {
@@ -400,7 +384,7 @@
             }
             
             .scene-image {
-                height: 150px;
+                height: 200px; /* Adjusted for small mobile */
             }
             
             .story-text {
