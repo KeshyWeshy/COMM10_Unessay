@@ -13,15 +13,12 @@
         }
         
         :root {
-            --primary: #e94560;
-            --secondary: #0c0808;
-            --accent: #d53e07;
+            --primary: #f05938;
+            --secondary: #0f3460;
+            --accent: #f07d23;
             --dark: #1a1a2e;
             --darker: #16213e;
             --light: #f5f5f5;
-            --wood: #8B4513;
-            --wood-light: #A0522D;
-            --wood-dark: #654321;
         }
         
         body {
@@ -54,7 +51,7 @@
         
         .scene-image {
             width: 100%;
-            height: 400px; /* Fixed height for 3:2 aspect ratio */
+            height: 400px;
             border-radius: 10px;
             margin-bottom: 20px;
             display: flex;
@@ -80,23 +77,6 @@
             padding-left: 15px;
             text-align: left;
             font-style: italic;
-        }
-        
-        .typing {
-            overflow: hidden;
-            border-right: 2px solid var(--accent);
-            white-space: nowrap;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
-        
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--accent); }
         }
         
         .choices {
@@ -149,58 +129,152 @@
             min-height: 400px;
         }
         
-        .folder-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+        .case-carousel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+            height: 450px;
+        }
+        
+        .carousel-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
         
         .folder {
             background: linear-gradient(135deg, #2c3e50, #34495e);
-            border-radius: 8px;
-            padding: 25px 20px;
+            border-radius: 12px;
+            padding: 0;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
             border: 2px solid transparent;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .folder::before {
-            content: '';
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             position: absolute;
-            top: -10px;
-            left: 20px;
-            right: 20px;
-            height: 20px;
-            background: #e74c3c;
-            border-radius: 5px 5px 0 0;
-            transform: perspective(50px) rotateX(20deg);
+            overflow: hidden;
+            width: 280px;
+            aspect-ratio: 2/3;
+            opacity: 0;
+            transform: translateX(0) scale(0.8);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         
-        .folder:hover {
-            transform: translateY(-10px) rotate(-2deg);
+        .folder.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            z-index: 3;
             border-color: var(--accent);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+        
+        .folder.left {
+            opacity: 0.7;
+            transform: translateX(-180px) scale(0.85);
+            z-index: 2;
+            filter: blur(1px);
+            cursor: pointer;
+        }
+        
+        .folder.right {
+            opacity: 0.7;
+            transform: translateX(180px) scale(0.85);
+            z-index: 2;
+            filter: blur(1px);
+            cursor: pointer;
+        }
+        
+        .folder.hidden-left {
+            opacity: 0;
+            transform: translateX(-300px) scale(0.7);
+            z-index: 1;
+        }
+        
+        .folder.hidden-right {
+            opacity: 0;
+            transform: translateX(300px) scale(0.7);
+            z-index: 1;
+        }
+        
+        .folder-image {
+            width: 100%;
+            height: 75%;
+            object-fit: cover;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        .folder-content {
+            padding: 20px;
+            height: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .folder h3 {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--accent);
-            font-size: 20px;
+            font-size: 22px;
         }
         
         .folder p {
             font-size: 14px;
             opacity: 0.9;
+            line-height: 1.4;
         }
         
-        .title-screen, .intro-screen, .theoretical-screen, .credits-screen, .final-message-screen {
+        .case-indicators {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+        
+        .title-screen {
             text-align: center;
             padding: 40px 30px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .title-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+        
+        .title-screen > * {
+            position: relative;
+            z-index: 2;
         }
         
         .title-screen h1 {
@@ -222,13 +296,18 @@
             opacity: 0.9;
         }
         
-        .intro-screen h2, .theoretical-screen h2, .credits-screen h2, .final-message-screen h2 {
+        .intro-screen, .theoretical-screen, .credits-screen, .final-message-screen, .ending-reflection-screen {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .intro-screen h2, .theoretical-screen h2, .credits-screen h2, .final-message-screen h2, .ending-reflection-screen h2 {
             font-size: 32px;
             margin-bottom: 20px;
             color: var(--accent);
         }
         
-        .intro-screen p, .theoretical-screen p, .credits-screen p, .final-message-screen p {
+        .intro-screen p, .theoretical-screen p, .credits-screen p, .final-message-screen p, .ending-reflection-screen p {
             font-size: 18px;
             line-height: 1.6;
             margin-bottom: 30px;
@@ -269,6 +348,20 @@
         
         .consequences h3 {
             color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .ending-reflection {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .ending-reflection h3 {
+            color: var(--primary);
             margin-bottom: 10px;
         }
         
@@ -327,6 +420,23 @@
             z-index: 100;
         }
         
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
+        
+        .qr-code img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+        
         /* Mobile-specific styles */
         @media (max-width: 768px) {
             .container {
@@ -338,7 +448,7 @@
             }
             
             .scene-image {
-                height: 300px; /* Adjusted for mobile */
+                height: 300px;
             }
             
             .story-text {
@@ -351,16 +461,36 @@
                 font-size: 15px;
             }
             
-            .folder-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .folder {
+                width: 220px;
+            }
+            
+            .folder.left {
+                transform: translateX(-140px) scale(0.85);
+            }
+            
+            .folder.right {
+                transform: translateX(140px) scale(0.85);
+            }
+            
+            .folder.hidden-left {
+                transform: translateX(-220px) scale(0.7);
+            }
+            
+            .folder.hidden-right {
+                transform: translateX(220px) scale(0.7);
+            }
+            
+            .title-screen {
+                min-height: 400px;
+                padding: 30px 20px;
             }
             
             .title-screen h1 {
                 font-size: 36px;
             }
             
-            .intro-screen h2, .theoretical-screen h2, .credits-screen h2, .final-message-screen h2 {
+            .intro-screen h2, .theoretical-screen h2, .credits-screen h2, .final-message-screen h2, .ending-reflection-screen h2 {
                 font-size: 28px;
             }
             
@@ -370,6 +500,11 @@
             
             .ending-description {
                 font-size: 16px;
+            }
+            
+            .qr-code {
+                width: 150px;
+                height: 150px;
             }
         }
         
@@ -384,7 +519,7 @@
             }
             
             .scene-image {
-                height: 200px; /* Adjusted for small mobile */
+                height: 200px;
             }
             
             .story-text {
@@ -396,12 +531,42 @@
                 font-size: 14px;
             }
             
+            .folder {
+                width: 180px;
+            }
+            
+            .folder.left {
+                transform: translateX(-110px) scale(0.85);
+            }
+            
+            .folder.right {
+                transform: translateX(110px) scale(0.85);
+            }
+            
+            .folder.hidden-left {
+                transform: translateX(-180px) scale(0.7);
+            }
+            
+            .folder.hidden-right {
+                transform: translateX(180px) scale(0.7);
+            }
+            
+            .title-screen {
+                min-height: 350px;
+                padding: 20px 15px;
+            }
+            
             .title-screen h1 {
                 font-size: 28px;
             }
             
-            .intro-screen h2, .theoretical-screen h2, .credits-screen h2, .final-message-screen h2 {
+            .intro-screen h2, .theoretical-screen h2, .credits-screen h2, .final-message-screen h2, .ending-reflection-screen h2 {
                 font-size: 24px;
+            }
+            
+            .qr-code {
+                width: 120px;
+                height: 120px;
             }
         }
     </style>
@@ -414,36 +579,42 @@
     </div>
 
     <script>
-        // Image paths (using placeholder images - replace with actual images)
+        // Image paths (using local image references)
         const images = {
-            startingPoint: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            titleBackground: "Title.png",
+            startingPoint: "SP.png",
             dreamboi: {
-                question1: "https://i.imgur.com/Jfv4TGi.jpeg",
-                question2: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                question3: "https://images.unsplash.com/photo-1586899028174-e09c813d2e43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingA: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingB: "https://images.unsplash.com/photo-1489599809505-f2d4c65055d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingC: "https://images.unsplash.com/photo-1495465798131-8df9440b8d0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                thumbnail: "TN1.png",
+                question1: "P1Q1.png",
+                question2: "P1Q2.png",
+                question3: "P1Q3.png",
+                question4: "Q4.png",
+                endingA: "image7.jpg",
+                endingB: "image8.jpg",
+                endingC: "image9.jpg"
             },
             myFatherMyself: {
-                question1: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                question2: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                question3: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingA: "https://images.unsplash.com/photo-1489599809505-f2d4c65055d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingB: "https://images.unsplash.com/photo-1495465798131-8df9440b8d0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingC: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                thumbnail: "TN2.PNG",
+                question1: "P2Q1.png",
+                question2: "P2Q2.png",
+                question3: "P2Q3.png",
+                endingA: "image14.jpg",
+                endingB: "image15.jpg",
+                endingC: "image16.jpg"
             },
             dearSatan: {
-                question1: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                question2: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                question3: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingA: "https://images.unsplash.com/photo-1489599809505-f2d4c65055d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingB: "https://images.unsplash.com/photo-1495465798131-8df9440b8d0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                endingC: "https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-            }
+                thumbnail: "TN3.PNG",
+                question1: "P1Q1.png",
+                question2: "P1Q2.png",
+                question3: "P1Q3.png",
+                endingA: "image21.jpg",
+                endingB: "image22.jpg",
+                endingC: "image23.jpg"
+            },
+            qrCode: "qr_code.jpg"
         };
 
-        // Story data structure with all three case files
+        // Story data structure with all three case files (updated with dialogue tracker content)
         const storyData = {
             paths: {
                 dreamboi: {
@@ -459,44 +630,56 @@
                             image: "dreamboi.question2"
                         },
                         {
-                            text: "A 'careful' moment of deliberation passes. Let's stamp our votes.",
+                            text: "The Progressive member tilts her head, 'Do you really believe that?'",
                             image: "dreamboi.question3"
+                        },
+                        {
+                            text: "A 'careful' moment of deliberation passes. How would you rate this film?",
+                            image: "dreamboi.question4"
                         }
                     ],
                     choices: [
                         [
                             { text: "This is too explicit.", value: "A" },
-                            { text: "This is honest. Erotic, but human.", value: "B" },
+                            { text: "This is honest portrayal. Erotic, but human.", value: "B" },
                             { text: "I don't know enough to have an opinion, let's just follow protocol.", value: "C" }
                         ],
                         [
-                            { text: "There's a difference between intimacy and provocation. This is a danger to the public.", value: "A" },
-                            { text: "You strongly object, 'It's not pornography. It's perspective. Trans desire is as valid as heterosexual desire.' Silence. A cough. The Conservative board member starts highlighting your sentence in red.", value: "B" },
+                            { text: "There's a difference between intimacy and provocation. This is a danger to the public and should be banned.", value: "A" },
+                            { text: "You strongly object, 'It's not pornography. It's perspective. Trans desire is as valid as heterosexual desire.'", value: "B" },
                             { text: "You say nothing. You check the handbook.", value: "C" }
                         ],
                         [
-                            { text: "Vote to X Rating", value: "A" },
-                            { text: "Vote to R-16", value: "B" },
-                            { text: "Ask for 'revisions' from filmmaker", value: "C" }
+                            { text: "Think about it and take a look at the other entries. Most of them are as explicit as this one, just heterosexual. Is this really where we're drawing the line?", value: "A" },
+                            { text: "Silence. A cough from someone else. You pause and think. Representation matters after all, but should this film be allowed for public viewing?", value: "B" },
+                            { text: "You think for a moment. Deep inside, you know that these stories are not given enough representation. I should be careful.", value: "C" }
+                        ],
+                        [
+                            { text: "Vote to X", value: "A" },
+                            { text: "Vote to R-18", value: "B" },
+                            { text: "Ask for 'revisions' from Filmmaker", value: "C" }
                         ]
                     ],
                     endings: {
                         A: {
                             title: "BANNED",
-                            description: "The stamp hits the paper. X. Banned. The director is notified through a carefully worded email.",
-                            consequences: "Conservative page: 'PROTECT OUR YOUTH'. Film Twitter: 'So heterosexual sex is fine but not trans intimacy?' The news goes viral and the film community cries out in protest. A contestation is submitted. Due to extreme backlash, it is re-rated to R-16. The film survives, but only in late night viewings, in two independent cinemas, for people who already agree with you. Visibility is allowed, but strategically limited. Not erasure. Just controlled exposure.",
+                            description: "The stamp hits the paper: X. Banned. The director is notified through a carefully worded email.",
+                            consequences: "Conservative page: 'PROTECT OUR YOUTH'. Film Twitter: 'So heterosexual sex is fine but not trans intimacy?' The news goes viral and the film community cries out in protest. The decision had to be appealed twice. Due to extreme backlash, it is re-rated to R-18. The film survives, but only in late night viewings, in select cinemas, for people who already agree with you. Visibility is allowed, but strategically limited. This is not erasure. Just controlled exposure.",
+                            reflection: "Even when the board gives in to the public (R-18), it does so on its terms. Filmmakers and producers are burdened with material losses and risk invisibility. This maintains hegemony, because power defines how desire is visible.",
                             image: "dreamboi.endingA"
                         },
                         B: {
                             title: "RELEASED",
-                            description: "The Bureaucrat gasps at your vote. The vote is 3-1. The movie is stamped for restricted release.",
-                            consequences: "The film survives, but only in late night viewings, in two independent cinemas, for people who already agree with you. Visibility is allowed, but strategically limited. Not erasure. Just controlled exposure.",
+                            description: "The Bureaucrat shakes his head at the outcome. The vote is 3-1. The movie is stamped for R-18 release.",
+                            consequences: "The film survives, but only in late night viewings, in select cinemas, for people who already agree with you. Visibility is allowed, but strategically limited. This is not erasure. Just controlled exposure.",
+                            reflection: "Even when the board votes to release the film (R-18), it does so on its own terms by limiting access. This maintains hegemony, because power defines how desire is visible.",
                             image: "dreamboi.endingB"
                         },
                         C: {
                             title: "REVISED",
-                            description: "The board acknowledges the artistic ambition of Dreamboi. However, some elements will lead toward ideological confusion. In the spirit of creative compromise, the film may be screened under the following conditions: Fade-to-black on all trans intimacy. One line where the character affirms 'traditional Filipino values'.",
+                            description: "The board acknowledges the artistic ambition of Dreamboi. However, some elements will lead toward ideological confusion. In the spirit of creative compromise, the film may be screened under the following conditions: (1) Fade-to-black on all trans intimacy, and (2) One line where the character affirms 'traditional Filipino values'",
                             consequences: "You granted visibility, but with a leash. The system didn't break; it just policed itself more gently. You did not fully liberate Diwa. But you did let her be seen.",
+                            reflection: "Even when the board gives in (R-18), it does so on its terms — trimming fantasy, adding moral commentary, limiting access. This maintains hegemony, because power defines how desire is visible.",
                             image: "dreamboi.endingC"
                         }
                     }
@@ -506,7 +689,7 @@
                     description: "Case File #002: A complex story of love and trauma",
                     questions: [
                         {
-                            text: "A disturbing incestuous narrative where a closeted gay man adopts his dead lover's son, and complexly falls in love with him. Sexual abuse. Trauma. Queerness coded as decay. Yet somehow... 'A cautionary tale,' one member says.",
+                            text: "A disturbing incestuous narrative where a closeted gay man adopts his dead ex-lover's son, and complexly falls in love with him. Sexual abuse. Trauma. Queerness coded as decay. Yet somehow... 'A cautionary tale,' one member says.",
                             image: "myFatherMyself.question1"
                         },
                         {
@@ -514,44 +697,56 @@
                             image: "myFatherMyself.question2"
                         },
                         {
-                            text: "A 'careful' moment of deliberation passes. Let's stamp our votes.",
+                            text: "The Bureaucrat taps his temple, 'Bad publicity is still publicity. Wouldn't it be better to ignite discourse?'",
                             image: "myFatherMyself.question3"
+                        },
+                        {
+                            text: "A 'careful' moment of deliberation passes. How would you rate this film?",
+                            image: "dreamboi.question4"
                         }
                     ],
                     choices: [
                         [
-                            { text: "It's a real story, it's meant to warn and reflect.", value: "A" },
-                            { text: "This is exploitative and reinforces harmful stereotypes.", value: "B" },
+                            { text: "It's probably a real story so it's meant to warn and reflect.", value: "A" },
+                            { text: "This is very exploitative and reinforces harmful stereotypes.", value: "B" },
                             { text: "We are just neutral arbiters.", value: "C" }
                         ],
                         [
-                            { text: "Let them see the consequences. People need to see this as it's honest.", value: "A" },
+                            { text: "Let them see the consequences. People need to see this as it's honest, not all gay portrayals should be positive as that is unrealistic.", value: "A" },
                             { text: "You strongly object, 'This portrays queerness as moral collapse. They're using queer pain as a spectacle.'", value: "B" },
                             { text: "You choose the safety of procedure. The most political choice disguised as none.", value: "C" }
                         ],
                         [
-                            { text: "Vote to R-16", value: "A" },
-                            { text: "Vote to X Rating", value: "B" },
-                            { text: "Vote to R-16", value: "C" }
+                            { text: "He might be right. Portraying sinful behavior allows people to reflect. But... what good does this do? Maybe I should reconsider.", value: "A" },
+                            { text: "Not when they are already marginalized, this is just dehumanizing.", value: "B" },
+                            { text: "You think for a moment. There's something off about this film. I should be careful.", value: "C" }
+                        ],
+                        [
+                            { text: "Vote to R-18", value: "A" },
+                            { text: "Vote to X", value: "B" },
+                            { text: "Vote to R-18", value: "C" }
                         ]
                     ],
                     endings: {
                         A: {
                             title: "RESTRICTED RELEASE",
-                            description: "The film gets restricted release. They justify: the film is mature, intense, not for the young.",
-                            consequences: "Some see this as truth-telling; others, as a sensational exhibition. A queer story can be shown, but only when it confirms dominant ideology.",
+                            description: "The film gets R-18 release. They justify: the film is mature, intense, not for the young. Some see this as truth-telling; others, as a sensational exhibition.",
+                            consequences: "Conservative groups would still consider the film disturbing, but turn a blind eye since it is restricted anyways. The misrepresentation satisfies their beliefs. Progressive communities speak out but goes unheard. Status quo is maintained.",
+                            reflection: "This is an example of cultural legitimation via regulation: marginal stories are allowed, but only when they reinforce dominant moral structures.",
                             image: "myFatherMyself.endingA"
                         },
                         B: {
                             title: "OUTVOTED",
-                            description: "You vote to ban it, but you are outvoted by the others. The film gets restricted release.",
-                            consequences: "They justify: the film is mature, intense, not for the young. Some see this as truth-telling; others, as a sensational exhibition. A queer story can be shown, but only when it confirms dominant ideology.",
+                            description: "You vote to ban it, but you are outvoted by the others. The film gets R-18 release. They justify: the film is mature, intense, not for the young. Some see this as truth-telling; others, as a sensational exhibition.",
+                            consequences: "Conservative groups would still consider the film disturbing, but turn a blind eye since it is restricted anyways. The misrepresentation satisfies their beliefs. Progressive communities speak out but goes unheard. Status quo is maintained.",
+                            reflection: "This is an example of cultural legitimation via regulation: marginal stories are allowed, but only when they reinforce dominant moral structures.",
                             image: "myFatherMyself.endingB"
                         },
                         C: {
                             title: "PROCEDURAL RELEASE",
-                            description: "The film gets restricted release. They justify: the film is mature, intense, not for the young.",
-                            consequences: "Some see this as truth-telling; others, as a sensational exhibition. A queer story can be shown, but only when it confirms dominant ideology.",
+                            description: "The film gets R-18 release. They justify: the film is mature, intense, not for the young. Some see this as truth-telling; others, as a sensational exhibition.",
+                            consequences: "Conservative groups would still consider the film disturbing, but turn a blind eye since it is restricted anyways. The misrepresentation satisfies their beliefs. Progressive communities speak out but goes unheard. Status quo is maintained.",
+                            reflection: "This is an example of cultural legitimation via regulation: marginal stories are allowed, but only when they reinforce dominant moral structures.",
                             image: "myFatherMyself.endingC"
                         }
                     }
@@ -561,7 +756,7 @@
                     description: "Case File #003: A controversial Christmas story",
                     questions: [
                         {
-                            text: "A 'Christmas' film like no other. A little girl named Chichi writes a letter to Santa. But she misspells his name, and it lands in Satan's mailbox. Satan (yes, Satan) shows up, not to ruin things, but to change. To give gifts. To be... kind. Somewhere, someone is very offended. Letters have already been filed.",
+                            text: "A 'Christmas' film like no other. A little girl named Chichi writes a letter to Santa, but she misspells his name, and it lands in Satan's mailbox. Satan shows up, not to ruin things, but to change. To give gifts. To be... kind. A story of redemption. Letters of complaints make the case file bulky. Somewhere, someone is very offended.",
                             image: "dearSatan.question1"
                         },
                         {
@@ -569,8 +764,12 @@
                             image: "dearSatan.question2"
                         },
                         {
-                            text: "A 'careful' moment of deliberation passes. Let's stamp our votes.",
+                            text: "The Conservative slams the table, 'Think about what precedent this will set for future films. Do you really want to encourage this?'",
                             image: "dearSatan.question3"
+                        },
+                        {
+                            text: "A 'careful' moment of deliberation passes. How would you rate this film?",
+                            image: "dreamboi.question4"
                         }
                     ],
                     choices: [
@@ -581,32 +780,40 @@
                         ],
                         [
                             { text: "Satan? Good? That's not how religion works. We can't portray evil as redeemable.", value: "A" },
-                            { text: "That's actually a compelling plot, faith transforming darkness. Maybe we should let the audience decide what kind of evil they fear.", value: "B" },
+                            { text: "That's actually a compelling plot, faith transforming darkness. Maybe we should let the audience decide how they would interpret this.", value: "B" },
                             { text: "Let's refer to MTRCB guidelines.", value: "C" }
                         ],
                         [
-                            { text: "Vote to X Rating", value: "A" },
-                            { text: "Vote to R-16", value: "B" },
+                            { text: "You take a moment to think about it, but no, there's no point in portraying Satan as redeemable... unless?", value: "A" },
+                            { text: "Perhaps he has a point, but does it have to be banned? This is not an uncommon trope after all. The series Lucifer is famous for a reason after all.", value: "B" },
+                            { text: "You think for a moment. Isn't the point of art to disturb the comfortable and comfort the disturbed? I should be careful.", value: "C" }
+                        ],
+                        [
+                            { text: "Vote to X", value: "A" },
+                            { text: "Vote to R-18", value: "B" },
                             { text: "Ask for 'Revisions' from Filmmaker", value: "C" }
                         ]
                     ],
                     endings: {
                         A: {
                             title: "BANNED",
-                            description: "The board slams the stamp. X. Dear Satan is officially banned from theaters.",
-                            consequences: "MTRCB Chair states: redemption of Satan is an 'attack on Christian belief.' Church groups: 'Satan will never be good.' Film Twitter: 'What's scarier—the devil or the censors?' Producer note: 'We won't appeal; we'll stream instead.'",
+                            description: "The board slams the stamp. X. Dear Satan is officially banned from theaters. The MTRCB Chairwoman states: redemption of Satan is an 'attack on Christian belief.'",
+                            consequences: "Church groups: 'Satan will never be good.' Film Twitter: 'What's scarier: the devil or the censors?' Producer note: 'We won't appeal; we'll stream instead.'",
+                            reflection: "The MTRCB, like an Ideological State Apparatus, enforces a particular theology — it does not just enforce 'morality.'",
                             image: "dearSatan.endingA"
                         },
                         B: {
                             title: "OUTVOTED",
-                            description: "You vote to ban it, but you are outvoted by the others. The board slams the stamp. X. Dear Satan is officially banned from theaters.",
-                            consequences: "MTRCB Chair states: redemption of Satan is an 'attack on Christian belief.' Church groups: 'Satan will never be good.' Film Twitter: 'What's scarier—the devil or the censors?' Producer note: 'We won't appeal; we'll stream instead.'",
+                            description: "You vote to rate it R-18, but you are outvoted by the others. The board slams the stamp. X. Dear Satan is officially banned from theaters. The MTRCB Chairwoman states: redemption of Satan is an 'attack on Christian belief.'",
+                            consequences: "Church groups: 'Satan will never be good.' Film Twitter: 'What's scarier: the devil or the censors?' Producer note: 'We won't appeal; we'll stream instead.'",
+                            reflection: "The MTRCB, like an Ideological State Apparatus, enforces a particular theology — it does not just enforce 'morality.'",
                             image: "dearSatan.endingB"
                         },
                         C: {
                             title: "REVISED RELEASE",
                             description: "The board reluctantly gives a restricted rating but demands 'contextual framing.' They require: A preface explaining the film is fictional. A 'moral afterword' text at the end about virtue and faith.",
-                            consequences: "Congratulations! You let redemption into power, but only because power insisted on rewriting the terms.",
+                            consequences: "Faith-based critics: 'Bold, but dangerous.' Art critics: 'Beautifully subversive.' MTRCB press: 'We defended belief—and let creativity breathe.'",
+                            reflection: "Congratulations! You let redemption into power, but only because power insisted on rewriting the terms.",
                             image: "dearSatan.endingC"
                         }
                     }
@@ -620,8 +827,10 @@
             currentQuestion: 0,
             answers: [],
             gameCompleted: false,
-            typingSpeed: 30, // milliseconds per character
-            skipTyping: false
+            typingSpeed: 30,
+            skipTyping: false,
+            currentCaseIndex: 0,
+            currentEnding: null
         };
 
         // DOM elements
@@ -635,7 +844,7 @@
         // Show title screen
         function showTitleScreen() {
             let html = `
-                <div class="title-screen">
+                <div class="title-screen" style="background-image: url('${images.titleBackground}')">
                     <h1>RATING PENDING</h1>
                     <p>A Choose-Your-Own-Censorship Experience</p>
                     <button class="start-btn" onclick="showIntroScreen()">Begin Experience</button>
@@ -664,27 +873,84 @@
 
         // Show path selection screen
         function showPathSelection() {
+            const pathKeys = Object.keys(storyData.paths);
+            
             let html = `
                 <div class="desk-interface">
                     <div class="story-text">
                         <h2>Case Files</h2>
                         <p>Select a case file to review. Your decisions will shape Philippine cinema.</p>
                     </div>
-                    <div class="folder-grid">
-            `;
-            
-            for (const pathKey in storyData.paths) {
-                const path = storyData.paths[pathKey];
-                html += `
-                    <div class="folder" onclick="selectPath('${pathKey}')">
-                        <h3>${path.title}</h3>
-                        <p>${path.description}</p>
+                    <div class="case-carousel">
+                        <div class="carousel-container">
+                            ${pathKeys.map((key, index) => {
+                                const path = storyData.paths[key];
+                                const thumbnailPath = getImagePath(key + '.thumbnail');
+                                let positionClass = '';
+                                
+                                if (index === gameState.currentCaseIndex) {
+                                    positionClass = 'active';
+                                } else if (index === (gameState.currentCaseIndex - 1 + pathKeys.length) % pathKeys.length) {
+                                    positionClass = 'left';
+                                } else if (index === (gameState.currentCaseIndex + 1) % pathKeys.length) {
+                                    positionClass = 'right';
+                                } else if (index === (gameState.currentCaseIndex - 2 + pathKeys.length) % pathKeys.length) {
+                                    positionClass = 'hidden-left';
+                                } else {
+                                    positionClass = 'hidden-right';
+                                }
+                                
+                                let clickHandler = '';
+                                if (positionClass === 'active') {
+                                    clickHandler = `selectPath('${key}')`;
+                                } else if (positionClass === 'left') {
+                                    clickHandler = `previousCase()`;
+                                } else if (positionClass === 'right') {
+                                    clickHandler = `nextCase()`;
+                                } else {
+                                    clickHandler = 'void(0)';
+                                }
+                                
+                                return `
+                                    <div class="folder ${positionClass}" onclick="${clickHandler}">
+                                        <img src="${thumbnailPath}" alt="${path.title}" class="folder-image">
+                                        <div class="folder-content">
+                                            <h3>${path.title}</h3>
+                                            <p>${path.description}</p>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div class="case-indicators">
+                            ${pathKeys.map((key, index) => 
+                                `<div class="indicator ${index === gameState.currentCaseIndex ? 'active' : ''}" onclick="goToCase(${index})"></div>`
+                            ).join('')}
+                        </div>
                     </div>
-                `;
-            }
-            
-            html += `</div></div>`;
+                </div>
+            `;
             contentElement.innerHTML = html;
+        }
+
+        // Navigate to previous case
+        function previousCase() {
+            const pathKeys = Object.keys(storyData.paths);
+            gameState.currentCaseIndex = (gameState.currentCaseIndex - 1 + pathKeys.length) % pathKeys.length;
+            showPathSelection();
+        }
+
+        // Navigate to next case
+        function nextCase() {
+            const pathKeys = Object.keys(storyData.paths);
+            gameState.currentCaseIndex = (gameState.currentCaseIndex + 1) % pathKeys.length;
+            showPathSelection();
+        }
+
+        // Go to specific case
+        function goToCase(index) {
+            gameState.currentCaseIndex = index;
+            showPathSelection();
         }
 
         // Select a path and start the story
@@ -770,6 +1036,7 @@
             }
             
             const ending = path.endings[endingKey];
+            gameState.currentEnding = ending;
             const imagePath = getImagePath(ending.image);
             
             let html = `
@@ -783,12 +1050,29 @@
                         <h3>Consequences:</h3>
                         <p>${ending.consequences}</p>
                     </div>
-                    <button class="next-btn" onclick="showTheoreticalMessage()">Continue</button>
+                    <button class="next-btn" onclick="showEndingReflection()">Continue</button>
                 </div>
             `;
             
             contentElement.innerHTML = html;
             gameState.gameCompleted = true;
+        }
+
+        // Show ending reflection
+        function showEndingReflection() {
+            const ending = gameState.currentEnding;
+            
+            let html = `
+                <div class="ending-reflection-screen">
+                    <h2>Ending Reflection</h2>
+                    <div class="ending-reflection">
+                        <h3>Critical Analysis:</h3>
+                        <p>${ending.reflection}</p>
+                    </div>
+                    <button class="next-btn" onclick="showTheoreticalMessage()">Continue</button>
+                </div>
+            `;
+            contentElement.innerHTML = html;
         }
 
         // Type text animation
@@ -851,7 +1135,13 @@
                     <p>Created for COMM 10: Introduction to Communication</p>
                     <p>University of the Philippines</p>
                     <p>Inspired by real cases of film classification in the Philippines</p>
-                    <p>Link to an online copy of the concept paper!!</p>
+                    <p>To learn more, scan this QR code for our Concept Paper:</p>
+                    <div class="qr-code">
+                        <img src="${images.qrCode}" alt="QR Code">
+                    </div>
+                    <p>"Choose Your Own Censorship: Tensions Between Conservatism and Progressivism in Filipino Media"</p>
+                    <p>Abellanosa, Ally R.<br>Jacinto, Ingrid Dorothy DP.<br>Ladanan, Tyrone Jikaine T.<br>Rebanal, Cristina Andrea H.<br>Rosales, Elijah Kesh C.</p>
+                    <p>Department of Humanities, University of the Philippines Los Baños<br>COMM 10: Critical Perspectives in Communication<br>Asst. Prof. Carson Jeffrey O. Cruz</p>
                     <p>All opinions expressed are purely fictional and do not represent any real government body.</p>
                     <button class="next-btn" onclick="showFinalMessage()">Continue</button>
                 </div>
@@ -879,7 +1169,9 @@
                 answers: [],
                 gameCompleted: false,
                 typingSpeed: 30,
-                skipTyping: false
+                skipTyping: false,
+                currentCaseIndex: 0,
+                currentEnding: null
             };
             initGame();
         }
